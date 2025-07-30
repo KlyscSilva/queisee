@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Aniversário</title>
+<link rel="stylesheet" href="style.css">
+<link rel="shortcut icon" href="love.png" type="image/x-icon">
+</head>
+
+<body>
+
+    <div class="hearts" id="hearts"></div>
+    <button id="music-btn">▶</button>
+    <audio id="bg-music" src="musica.mp3" loop></audio>
+
+    <h1 style="font-size: 15px;">Feliz Aniversário Meu Amor</h1>
+
+    <div class="grid" id="gallery"></div>
+
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <a class="close" href="javascript:void(0)" onclick="closeLightbox()">&times;</a>
+        <img id="lightbox-img" src="">
+    </div>
+
+<script>
+
+const legendas = [
+
+  "Nosso primeiro encontro 💕",
+  "Feliz aniversário, meu amor! Te amo muito ❤️",
+  "Para sempre juntos ❤️",
+  "Momentos inesquecíveis ao seu lado 😘",
+  "Te amo cada dia mais 💞",
+  "Você é minha vida 💘",
+  "Lembranças lindas que construímos ✨",
+  "Com você sou mais feliz 🌹",
+  "Você é meu presente de Deus 💖",
+  "Obrigado por tudo que vivemos 💝",
+  "Te amo 💝"
+];
+
+const gallery = document.getElementById('gallery');
+for (let i = 0; i < 11; i++) {
+    const img = `${i}.jpeg`;
+    const legenda = legendas[i] || "";
+    gallery.innerHTML += `
+        <div class="card" onclick="openLightbox('${img}')">
+            <img src="${img}" alt="Foto ${i}">
+            <div class="legenda">${legenda}</div>
+        </div>
+    `;
+}
+
+function criarCoracao() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+    heart.style.fontSize = (15 + Math.random() * 15) + "px";
+    document.getElementById("hearts").appendChild(heart);
+    setTimeout(() => heart.remove(), 7000);
+}
+setInterval(criarCoracao, 300);
+
+function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').style.display = 'block';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').style.display = 'none';
+}
+
+const musicBtn = document.getElementById('music-btn');
+const bgMusic = document.getElementById('bg-music');
+let playing = false;
+
+window.addEventListener('load', () => {
+    bgMusic.volume = 0.3;
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            playing = true;
+            musicBtn.textContent = "⏸";
+        }).catch(() => {
+            musicBtn.textContent = "▶";
+        });
+    }
+});
+
+musicBtn.addEventListener('click', () => {
+    if (!playing) {
+        bgMusic.play();
+        playing = true;
+        musicBtn.textContent = "⏸";
+    } else {
+        bgMusic.pause();
+        playing = false;
+        musicBtn.textContent = "▶";
+    }
+});
+</script>
+</body>
+</html>
